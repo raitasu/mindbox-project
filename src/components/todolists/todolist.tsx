@@ -1,19 +1,18 @@
 import React, {useCallback} from 'react';
 import {
-    Box, Button,
+    Button,
     Card,
     CardBody,
-    CardHeader, Checkbox,
+    CardHeader,
     Flex,
     Heading,
-    IconButton, Input,
+    IconButton,
     Stack,
     StackDivider,
-    Text,
     Tooltip
 } from "@chakra-ui/react";
 import EditableText from "../EditableText";
-import {AddIcon, CloseIcon, DeleteIcon} from "@chakra-ui/icons";
+import {CloseIcon} from "@chakra-ui/icons";
 import {AddItemForm} from "../AdditemForm";
 import {TaskType} from "../redux/tasksReducer";
 import {Task} from "./tasks/Task";
@@ -54,10 +53,10 @@ export const Todolist = ({
     let tasksForTodolist = tasks;
 
     if (filter === "active") {
-        tasksForTodolist = tasks.filter((el) => !el.isDone);
+        tasksForTodolist = tasks ? tasks.filter((el) => !el.isDone) : []
     }
     if (filter === "completed") {
-        tasksForTodolist = tasks.filter((el) => el.isDone);
+        tasksForTodolist = tasks ? tasks.filter((el) => el.isDone) : []
     }
 
     const addTaskHandler = (title: string) => {
@@ -95,9 +94,12 @@ export const Todolist = ({
                         />
                     })}
                     <Flex justifyContent='space-around'>
-                        <Button variant={filter === 'all' ? 'outline' : 'solid' } onClick={() => changeFilterHandler('all')}>All</Button>
-                        <Button variant={filter === 'active' ? 'outline' : 'solid' } onClick={() => changeFilterHandler('active')}>Active</Button>
-                        <Button variant={filter === 'completed' ? 'outline' : 'solid' } onClick={() => changeFilterHandler('completed')}>Completed</Button>
+                        <Button variant={filter === 'all' ? 'outline' : 'solid'}
+                                onClick={() => changeFilterHandler('all')}>All</Button>
+                        <Button variant={filter === 'active' ? 'outline' : 'solid'}
+                                onClick={() => changeFilterHandler('active')}>Active</Button>
+                        <Button variant={filter === 'completed' ? 'outline' : 'solid'}
+                                onClick={() => changeFilterHandler('completed')}>Completed</Button>
                     </Flex>
                 </Stack>
             </CardBody>

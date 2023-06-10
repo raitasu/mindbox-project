@@ -80,7 +80,6 @@ export const App = () => {
         },
         [dispatch],
     );
-    console.log(todolists)
     return (
         <ChakraProvider>
             <Header/>

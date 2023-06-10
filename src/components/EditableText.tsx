@@ -1,5 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, memo, useState} from "react";
-import {Box, Flex, Input, Text} from '@chakra-ui/react'
+import { Flex, Input, Text} from '@chakra-ui/react'
 
 type EditableTextType = {
     text: string;
@@ -19,7 +19,7 @@ const EditableText = memo(({text, onChange, checked}: EditableTextType) => {
         onChange(title);
     };
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value);
+       if(e.currentTarget.value !== '') setTitle(e.currentTarget.value);
     };
     const onKeyPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
