@@ -14,7 +14,7 @@ import {Todolist} from "./components/todolists/todolist";
 import {
     addTaskAC,
     changeTaskStatusAC,
-    changeTaskTitleAC,
+    changeTaskTitleAC, removeCompletedTasksAC,
     removeTasksAC,
     TasksStateType
 } from "./components/redux/tasksReducer";
@@ -80,6 +80,13 @@ export const App = () => {
         },
         [dispatch],
     );
+
+    const removeCompletedTasks = useCallback((todolistId: string) => {
+        let action = removeCompletedTasksAC(todolistId)
+        dispatch(action)
+    }, [dispatch])
+
+
     return (
         <ChakraProvider>
             <Header/>
@@ -99,6 +106,7 @@ export const App = () => {
                                      changeTaskTitle={changeTitleTask}
                                      changeTaskStatus={changeTaskStatus}
                                      changeFilter={changeFilter}
+                                     removeCompletedTasks={removeCompletedTasks}
                     />
                 })}
             </Flex>

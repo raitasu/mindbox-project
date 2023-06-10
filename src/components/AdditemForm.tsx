@@ -7,7 +7,7 @@ export type AddItemFormType = {
     placeholder?: string
 };
 
-export const AddItemForm = React.memo(({addItem, placeholder} : AddItemFormType) => {
+export const AddItemForm = React.memo(({addItem, placeholder}: AddItemFormType) => {
     let [title, setTitle] = useState("");
     let [isError, setIsError] = useState<boolean>(false);
 
@@ -35,15 +35,15 @@ export const AddItemForm = React.memo(({addItem, placeholder} : AddItemFormType)
         }
     };
     return (
-        <FormControl isInvalid={isError} >
-            <Flex  >
+        <FormControl isInvalid={isError}>
+            <Flex gap={3}>
                 <Flex flexDirection='column' width='100%'>
                     <Input placeholder={placeholder || 'Title'} value={title} onChange={onChangeTitle}
                            onKeyPress={onKeyPressHandler}/>
                     {isError && <Text color='red'>{errorMessage}</Text>}
                 </Flex>
                 <Tooltip label={placeholder}>
-                <IconButton aria-label='Add item' icon={<AddIcon/>} onClick={onClickAddTask}/>
+                    <IconButton aria-label='Add item' icon={<AddIcon/>} onClick={onClickAddTask}/>
                 </Tooltip>
 
             </Flex>

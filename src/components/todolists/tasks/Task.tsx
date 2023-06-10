@@ -1,6 +1,6 @@
-import React, {ChangeEvent, useCallback} from 'react';
-import {Checkbox, Flex, IconButton} from "@chakra-ui/react";
-import {DeleteIcon} from "@chakra-ui/icons";
+import React, {ChangeEvent, useCallback, useState} from 'react';
+import {Checkbox, Flex, IconButton, Tooltip} from "@chakra-ui/react";
+import {DeleteIcon, EditIcon} from "@chakra-ui/icons";
 import {TaskType} from "../../redux/tasksReducer";
 import EditableText from "../../EditableText";
 
@@ -9,7 +9,7 @@ export const Task = ({
                          task,
                          removeTask,
                          changeTaskTitle,
-                         changeTaskStatus
+                         changeTaskStatus,
                      }: {
     id: string,
     task: TaskType,
@@ -17,6 +17,8 @@ export const Task = ({
     changeTaskTitle: (id: string, taskId: string, newTitle: string) => void
     changeTaskStatus: (id: string, taskId: string, isDone: boolean) => void
 }) => {
+
+    const [isEditTask, setIsEditTask] = useState(false)
 
 
     const onChangeTaskTitle = (title: string) => {
@@ -32,11 +34,26 @@ export const Task = ({
         [changeTaskStatus, id, task.id]
     );
 
+    const editItemTitle = (value: boolean) => {
+        setIsEditTask(value)
+    }
     return (
-        <Flex key={id} justifyContent='space-between' alignItems='center'>
-            <Checkbox isChecked={task.isDone} onChange={onChangeHandler}/>
-            <EditableText text={task.title} onChange={onChangeTaskTitle} checked={task.isDone}/>
-            <IconButton aria-label='Delete item' icon={<DeleteIcon/>} onClick={() => removeTask(task.id, id)}/>
+        <Flex key={id} justifyContent='space-between' alignItems='center' gap={3}>
+           <Flex gap={2}>
+               <Checkbox isChecked={task.isDone} onChange={onChangeHandler}/>
+               <Flex width='240px'>
+               <EditableText text={task.title} onChange={onChangeTaskTitle} checked={task.isDone}
+                             editItemTitle={editItemTitle} isEdit={isEditTask}/>
+               </Flex>
+           </Flex>
+            <Flex>
+                <Tooltip label='Edit task'>
+                    <IconButton aria-label='Edit item' icon={<EditIcon/>} onClick={() => editItemTitle(true)}/>
+                </Tooltip>
+                <Tooltip label='Delete task'>
+                    <IconButton aria-label='Delete item' icon={<DeleteIcon/>} onClick={() => removeTask(task.id, id)}/>
+                </Tooltip>
+            </Flex>
         </Flex>
     );
 };

@@ -13,6 +13,7 @@ export type TasksActionsType = ReturnType<typeof addTaskAC>
     | ReturnType<typeof removeTasksAC>
     | ReturnType<typeof changeTaskTitleAC>
     | ReturnType<typeof changeTaskStatusAC>
+    | ReturnType<typeof removeCompletedTasksAC>
 
 const initialState: TasksStateType = {};
 
@@ -30,10 +31,14 @@ export const tasksReducer = (state = initialState, action: TasksActionsType) => 
             return stateCopy;
         }
         case 'REMOVE-TASKS':
-            console.log(action.todolistId)
             return {
                 ...state,
                 [action.todolistId]: state[action.todolistId].filter((t) => t.id !== action.taskId),
+            };
+        case 'REMOVE-COMPLETED-TASKS':
+            return {
+                ...state,
+                [action.todolistId]: (state[action.todolistId] || []).filter((t) => !t.isDone),
             };
         case 'CHANGE-TASK-TITLE':
             return {
@@ -93,6 +98,12 @@ export const changeTaskStatusAC = (taskId: string, isDone: boolean, todolistId: 
         type: 'CHANGE-TASK-STATUS',
         taskId,
         isDone,
+        todolistId,
+    } as const;
+};
+export const removeCompletedTasksAC = (todolistId: string) => {
+    return {
+        type: 'REMOVE-COMPLETED-TASKS',
         todolistId,
     } as const;
 };

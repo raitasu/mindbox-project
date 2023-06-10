@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
     Button,
     Card,
@@ -9,10 +9,11 @@ import {
     IconButton,
     Stack,
     StackDivider,
-    Tooltip
+    Tooltip,
+    Text
 } from "@chakra-ui/react";
 import EditableText from "../EditableText";
-import {CloseIcon} from "@chakra-ui/icons";
+import {CloseIcon, EditIcon} from "@chakra-ui/icons";
 import {AddItemForm} from "../AdditemForm";
 import {TaskType} from "../redux/tasksReducer";
 import {Task} from "./tasks/Task";
@@ -28,21 +29,24 @@ export const Todolist = ({
                              removeTask,
                              changeTaskTitle,
                              changeTaskStatus,
-                             changeFilter
+                             changeFilter,
+                             removeCompletedTasks
                          }: {
-    id: string,
-    tasks: Array<TaskType>,
-    filter: string,
-    title: string,
-    changeTodolistTitle: (id: string, title: string) => void,
-    removeTodolist: (id: string) => void,
+    id: string
+    tasks: Array<TaskType>
+    filter: string
+    title: string
+    changeTodolistTitle: (id: string, title: string) => void
+    removeTodolist: (id: string) => void
     addTask: (id: string, title: string) => void
     removeTask: (taskId: string, id: string) => void
     changeTaskTitle: (id: string, taskId: string, newTitle: string) => void
     changeTaskStatus: (id: string, taskId: string, isDone: boolean) => void
     changeFilter: (value: 'all' | 'active' | 'completed', todolistId: string) => void
+    removeCompletedTasks: (id: string) => void
 }) => {
 
+    const [isEditTodolist, setIsEditTodolist] = useState(false)
 
     const onChangeTodolistTitleHandler = useCallback(
         (newTitle: string) => {
@@ -58,6 +62,7 @@ export const Todolist = ({
     if (filter === "completed") {
         tasksForTodolist = tasks ? tasks.filter((el) => el.isDone) : []
     }
+    let activeTasks = (tasksForTodolist || []).filter((task) => !task.isDone);
 
     const addTaskHandler = (title: string) => {
         addTask(id, title)
@@ -68,15 +73,36 @@ export const Todolist = ({
         },
         [changeFilter, id],
     );
+    const removeCompletedTasksHandler = useCallback(() => {
+        removeCompletedTasks(id)
+    }, [removeCompletedTasks, id])
+
+
+    const editItemTitle = (value: boolean) => {
+        setIsEditTodolist(value)
+    }
+
     return (
-        <Card height='100%'>
+        <Card height='100%' width='400px'>
             <CardHeader>
-                <Flex justifyContent='space-between' alignItems='center'> <Heading size='md'>
-                    <EditableText text={title} onChange={onChangeTodolistTitleHandler}/>
-                </Heading>
-                    <Tooltip label='Delete todolist'>
-                        <IconButton aria-label='Delete item' icon={<CloseIcon/>} onClick={() => removeTodolist(id)}/>
-                    </Tooltip>
+                <Flex justifyContent='space-between' alignItems='center'>
+                    <Heading size='md'>
+                        <Flex width='270px'>
+                            <EditableText text={title} onChange={onChangeTodolistTitleHandler}
+                                          editItemTitle={editItemTitle}
+                                          isEdit={isEditTodolist}/>
+                        </Flex>
+                    </Heading>
+                    <Flex>
+                        <Tooltip label='Edit todolist'>
+                            <IconButton aria-label='Edit item' icon={<EditIcon/>} onClick={() => editItemTitle(!isEditTodolist)}/>
+                        </Tooltip>
+                        <Tooltip label='Delete todolist'>
+                            <IconButton aria-label='Delete item' icon={<CloseIcon/>}
+                                        onClick={() => removeTodolist(id)}/>
+                        </Tooltip>
+                    </Flex>
+
                 </Flex>
 
             </CardHeader>
@@ -93,13 +119,22 @@ export const Todolist = ({
                             changeTaskStatus={changeTaskStatus}
                         />
                     })}
-                    <Flex justifyContent='space-around'>
-                        <Button variant={filter === 'all' ? 'outline' : 'solid'}
-                                onClick={() => changeFilterHandler('all')}>All</Button>
-                        <Button variant={filter === 'active' ? 'outline' : 'solid'}
-                                onClick={() => changeFilterHandler('active')}>Active</Button>
-                        <Button variant={filter === 'completed' ? 'outline' : 'solid'}
-                                onClick={() => changeFilterHandler('completed')}>Completed</Button>
+                    <Flex direction={'column'} gap={3}>
+                        <Flex justifyContent='space-between'>
+                            <Button width='100px' variant={filter === 'all' ? 'outline' : 'solid'}
+                                    border={filter === 'all' ? '1px solid gray' : 'none'}
+                                    onClick={() => changeFilterHandler('all')}>All</Button>
+                            <Button width='100px' variant={filter === 'active' ? 'outline' : 'solid'}
+                                    border={filter === 'active' ? '1px solid gray' : 'none'}
+                                    onClick={() => changeFilterHandler('active')}>Active</Button>
+                            <Button width='100px' variant={filter === 'completed' ? 'outline' : 'solid'}
+                                    border={filter === 'completed' ? '1px solid gray' : 'none'}
+                                    onClick={() => changeFilterHandler('completed')}>Completed</Button>
+                        </Flex>
+                        <Flex justifyContent='space-between' alignItems='center'>
+                            <Text>{activeTasks.length} times left</Text>
+                            <Button onClick={() => removeCompletedTasksHandler()}>Clear completed</Button>
+                        </Flex>
                     </Flex>
                 </Stack>
             </CardBody>
