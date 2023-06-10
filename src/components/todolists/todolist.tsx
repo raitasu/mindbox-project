@@ -1,19 +1,18 @@
 import React, {useCallback} from 'react';
 import {
-    Box, Button,
+    Button,
     Card,
     CardBody,
-    CardHeader, Checkbox,
+    CardHeader,
     Flex,
     Heading,
-    IconButton, Input,
+    IconButton,
     Stack,
     StackDivider,
-    Text,
     Tooltip
 } from "@chakra-ui/react";
 import EditableText from "../EditableText";
-import {AddIcon, CloseIcon, DeleteIcon} from "@chakra-ui/icons";
+import {CloseIcon} from "@chakra-ui/icons";
 import {AddItemForm} from "../AdditemForm";
 import {TaskType} from "../redux/tasksReducer";
 import {Task} from "./tasks/Task";
