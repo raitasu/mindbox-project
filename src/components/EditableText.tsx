@@ -22,7 +22,7 @@ const EditableText = memo(({text, onChange, checked}: EditableTextType) => {
        if(e.currentTarget.value !== '') setTitle(e.currentTarget.value);
     };
     const onKeyPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter") {
+        if (title.trim() !== '' && event.key === "Enter" ) {
             activateViewHandler();
         }
     };
