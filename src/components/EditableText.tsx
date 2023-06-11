@@ -49,6 +49,7 @@ const EditableText = memo(({text, onChange, checked, editItemTitle, isEdit}: Edi
                 onKeyPress={onKeyPressHandler}
                 autoFocus
                 width='100%'
+                focusBorderColor='green'
                 placeholder={isError ? errorMessage : ''}
                 _placeholder={{
                     color: 'red'

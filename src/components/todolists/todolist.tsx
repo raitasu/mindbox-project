@@ -13,7 +13,7 @@ import {
     Text
 } from "@chakra-ui/react";
 import EditableText from "../EditableText";
-import {CloseIcon, EditIcon} from "@chakra-ui/icons";
+import {CheckIcon, CloseIcon, EditIcon} from "@chakra-ui/icons";
 import {AddItemForm} from "../AdditemForm";
 import {TaskType} from "../redux/tasksReducer";
 import {Task} from "./tasks/Task";
@@ -83,7 +83,7 @@ export const Todolist = ({
     }
 
     return (
-        <Card height='100%' width='400px'>
+        <Card height='100%' width='400px' boxShadow='0 2px 4px rgba(0, 0, 0, .2)'>
             <CardHeader>
                 <Flex justifyContent='space-between' alignItems='center'>
                     <Heading size='md'>
@@ -93,11 +93,14 @@ export const Todolist = ({
                                           isEdit={isEditTodolist}/>
                         </Flex>
                     </Heading>
-                    <Flex>
-                        <Tooltip label='Edit todolist'>
+                    <Flex gap={1}>
+                        {!isEditTodolist ? <Tooltip label='Edit todolist'>
                             <IconButton aria-label='Edit item' icon={<EditIcon/>}
                                         onClick={() => editItemTitle(!isEditTodolist)}/>
-                        </Tooltip>
+                        </Tooltip> : <Tooltip label='Save todolist'>
+                            <IconButton aria-label='Save item' icon={<CheckIcon/>}
+                                        />
+                        </Tooltip>}
                         <Tooltip label='Delete todolist'>
                             <IconButton aria-label='Delete item' icon={<CloseIcon/>}
                                         onClick={() => removeTodolist(id)}/>

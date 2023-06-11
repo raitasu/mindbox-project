@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useCallback, useState} from 'react';
 import {Checkbox, Flex, IconButton, Tooltip} from "@chakra-ui/react";
-import {DeleteIcon, EditIcon} from "@chakra-ui/icons";
+import {CheckIcon, DeleteIcon, EditIcon} from "@chakra-ui/icons";
 import {TaskType} from "../../redux/tasksReducer";
 import EditableText from "../../EditableText";
 
@@ -39,17 +39,20 @@ export const Task = ({
     }
     return (
         <Flex key={id} justifyContent='space-between' alignItems='center' gap={3}>
-           <Flex gap={2}>
-               <Checkbox isChecked={task.isDone} onChange={onChangeHandler}/>
-               <Flex width='240px'>
-               <EditableText text={task.title} onChange={onChangeTaskTitle} checked={task.isDone}
-                             editItemTitle={editItemTitle} isEdit={isEditTask}/>
-               </Flex>
-           </Flex>
-            <Flex>
-                <Tooltip label='Edit task'>
+            <Flex gap={2}>
+                <Checkbox isChecked={task.isDone} onChange={onChangeHandler} colorScheme='green' size='lg'/>
+                <Flex width='240px'>
+                    <EditableText text={task.title} onChange={onChangeTaskTitle} checked={task.isDone}
+                                  editItemTitle={editItemTitle} isEdit={isEditTask}/>
+                </Flex>
+            </Flex>
+            <Flex gap={1}>
+                {!isEditTask ? <Tooltip label='Edit task'>
                     <IconButton aria-label='Edit item' icon={<EditIcon/>} onClick={() => editItemTitle(true)}/>
-                </Tooltip>
+                </Tooltip> : <Tooltip label='Save task'>
+                    <IconButton aria-label='Save item' icon={<CheckIcon/>}/>
+                </Tooltip>}
+
                 <Tooltip label='Delete task'>
                     <IconButton aria-label='Delete item' icon={<DeleteIcon/>} onClick={() => removeTask(task.id, id)}/>
                 </Tooltip>
