@@ -62,7 +62,7 @@ export const Todolist = ({
     if (filter === "completed") {
         tasksForTodolist = tasks ? tasks.filter((el) => el.isDone) : []
     }
-    let activeTasks = (tasksForTodolist || []).filter((task) => !task.isDone);
+    let activeTasks = (tasks || []).filter((task) => !task.isDone);
 
     const addTaskHandler = (title: string) => {
         addTask(id, title)
@@ -95,16 +95,15 @@ export const Todolist = ({
                     </Heading>
                     <Flex>
                         <Tooltip label='Edit todolist'>
-                            <IconButton aria-label='Edit item' icon={<EditIcon/>} onClick={() => editItemTitle(!isEditTodolist)}/>
+                            <IconButton aria-label='Edit item' icon={<EditIcon/>}
+                                        onClick={() => editItemTitle(!isEditTodolist)}/>
                         </Tooltip>
                         <Tooltip label='Delete todolist'>
                             <IconButton aria-label='Delete item' icon={<CloseIcon/>}
                                         onClick={() => removeTodolist(id)}/>
                         </Tooltip>
                     </Flex>
-
                 </Flex>
-
             </CardHeader>
             <CardBody>
                 <Stack divider={<StackDivider/>} spacing='3'>
