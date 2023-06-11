@@ -39,7 +39,7 @@ export const AddItemForm = React.memo(({addItem, placeholder}: AddItemFormType) 
             <Flex gap={3}>
                 <Flex flexDirection='column' width='100%'>
                     <Input placeholder={placeholder || 'Title'} value={title} onChange={onChangeTitle}
-                           onKeyPress={onKeyPressHandler}/>
+                           onKeyPress={onKeyPressHandler} focusBorderColor='green'/>
                     {isError && <Text color='red'>{errorMessage}</Text>}
                 </Flex>
                 <Tooltip label={placeholder}>
